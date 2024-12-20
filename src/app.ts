@@ -1,22 +1,21 @@
+import express, { Request, Response } from "express";
 
-import express, { Request, Response } from 'express'
 
+const app = express();
 
-const app = express()
+// Middleware
+app.use(express.json()); // To parse JSON bodies
 
-// middleware
-app.use(express.json())
+// // Routes
+// app.use("/api/products", productRouter);
+// app.use("/api/orders", orderRouter);
 
-// app.use('/api/user', userRouter)
-// app.use('/api/tour', tourRouter)
+// Root route
+app.get("/", (req: Request, res: Response) => {
+  res.send({
+    status: true,
+    message: "Server is live",
+  });
+});
 
-// POST: /api/user/create-user
-
-app.get('/', (req: Request, res: Response) => {
-    res.send({
-        status: true,
-        message: 'Server is Rouning Live ⚡',
-    })
-})
-
-export default app
+export default app;
