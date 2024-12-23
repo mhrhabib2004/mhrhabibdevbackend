@@ -1,12 +1,11 @@
+import { Request, Response, NextFunction } from 'express';
 
-
-
-import { NextFunction, Request, RequestHandler, Response } from "express"
-
-const catchAsync = (fn: RequestHandler) => {
+const catchAsync = (fn: (req: Request, res: Response, next: NextFunction) => Promise<void>) => {
     return (req: Request, res: Response, next: NextFunction) => {
-        Promise.resolve(fn(req, res, next)).catch((err) => next(err))
-    }
-}
+        fn(req, res, next).catch((err) => {
+            res.status(500).json({ message: err.message || 'Internal Server Error' });
+        });
+    };
+};
 
 export default catchAsync;

@@ -1,11 +1,11 @@
-
 import bcrypt from 'bcrypt';
-import {  Model, model, Schema } from "mongoose";
+import { Model, model, Schema } from "mongoose";
 import { TUser } from "./user.interface";
 import config from '../../config';
 
-// Spasific filter interface data
+// Specific filter interface data
 interface UserModel extends Model<TUser> {
+    getAuthUserData(userId: string): Promise<TUser | null>;
     getPublicUserData(userId: string): Promise<Pick<TUser, '_id' | 'name' | 'email'>>;
 }
 
@@ -25,7 +25,7 @@ const userSchema = new Schema<TUser>(
             trim: true,
             validate: {
                 validator: function (value: string) {
-                    return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(value)
+                    return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(value);
                 },
                 message: '{VALUE} is not a valid email',
             },
@@ -52,31 +52,37 @@ const userSchema = new Schema<TUser>(
     },
     {
         timestamps: true,
-        // versionKey: false
     },
 );
-// Password hassing Function
+
+// Password hashing function
 userSchema.pre('save', async function (next) {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const user = this; // doc
-    // hashing password and save into DB
-    user.password = await bcrypt.hash(
-        user.password,
-        Number(config.bcrypt_salt_rounds),
-    );
+    const user = this;
+    if (user.isModified('password')) {
+        user.password = await bcrypt.hash(
+            user.password,
+            Number(config.bcrypt_salt_rounds),
+        );
+    }
     next();
 });
 
-// set '' after saving password
+// Clear password after saving
 userSchema.post('save', function (doc, next) {
     doc.password = '';
     next();
 });
 
-// Spasic data send function
+// Get specific user data for authentication
+userSchema.statics.getAuthUserData = function (userId: string) {
+    return this.findById(userId).select('+password _id name email role isBlocked');
+};
+
+// Get public user data
 userSchema.statics.getPublicUserData = function (userId: string) {
     return this.findById(userId).select('_id name email');
 };
 
-
+// Export User model
 export const User = model<TUser, UserModel>('User', userSchema);

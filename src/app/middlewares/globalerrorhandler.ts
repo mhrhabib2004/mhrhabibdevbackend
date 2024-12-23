@@ -11,8 +11,9 @@ import { ZodError } from 'zod';
 import config from '../config';
 import handleValidationError from '../errors/handleValidationError';
 import handleCastError from '../errors/handleCastError';
-import handleDuplicateError from '../errors/handleDuplicateError';
+
 import AppError from '../errors/AppError';
+import handleDuplicateError from '../errors/handeleDuplicateError';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
