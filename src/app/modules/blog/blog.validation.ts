@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 
 
@@ -9,9 +8,6 @@ const createBlogValidation = z.object({
             required_error: 'Title is required',
         }),
         content: z.string({
-            required_error: 'content is required',
-        }),
-        author: z.string({
             required_error: 'content is required',
         }),
     }),

@@ -3,12 +3,14 @@ import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
 import { BlogValidation } from './blog.validation';
 import { BlogsControllers } from './blog.controller';
+import auth from '../../middlewares/auth';
+import { USER_ROLE } from '../user/user.constant';
 
 const router = express.Router();
 
 // Creat Blogs Data Route
 router.post(
-    '/create-blog',
+    '/', auth(USER_ROLE.user),
     validateRequest(
         BlogValidation.createBlogValidation,
     ),
@@ -19,14 +21,14 @@ router.post(
 router.get('/', BlogsControllers.getAllBlog);
 
 // Single  Blog data get Route
-router.get(
-    '/:blogId',
-    BlogsControllers.getSingleBlog,
-);
+// router.get(
+//     '/:blogId', auth(USER_ROLE.user),
+//     BlogsControllers.getSingleBlog,
+// );
 
 // Update Blog Route
 router.patch(
-    '/:id',
+    '/:id', auth(USER_ROLE.user),
     validateRequest(
         BlogValidation.updateBlogValidation,
     ),
@@ -35,7 +37,7 @@ router.patch(
 
 // Delete Blog Route
 router.delete(
-    '/:id', BlogsControllers.deleteBlog,
+    '/:id', auth(USER_ROLE.user),  BlogsControllers.deleteBlog,
 );
 
 export const BlogsRoutes = router;
