@@ -1,3 +1,4 @@
+
 import { z } from "zod";
 
 
@@ -10,6 +11,8 @@ const createBlogValidation = z.object({
         content: z.string({
             required_error: 'content is required',
         }),
+        image: z.string().optional(),
+        categoty: z.string().optional(),
     }),
 });
 
@@ -19,6 +22,8 @@ const updateBlogValidation = z.object({
     body: z.object({
         title: z.string().optional(),
         content: z.string().optional(),
+        image: z.string().optional(),
+        categoty: z.string().optional(),
     }),
 });
 
