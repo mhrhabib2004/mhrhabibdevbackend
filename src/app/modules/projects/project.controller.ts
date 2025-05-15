@@ -1,101 +1,79 @@
-
-
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { projectService } from "./project.service";
 import httpStatus from "http-status";
 
-//     const { project: projectData } = req.body;
-
-//     const result = await projectService.createProjectIntoDB(projectData, req.file);
-
-//     sendResponse(res, {
-//         statusCode: httpStatus.CREATED,
-//         success: true,
-//         message: 'Project is created succesfully',
-//         data: result,
-//     });
-// });
-
-
+// ✅ Create Project
 const createProject = catchAsync(async (req, res) => {
+  const result = await projectService.createProjectIntoDB(req.body);
 
-    const result = await projectService.createProjectIntoDB(req.body);
-
-    sendResponse(res, {
-        statusCode: httpStatus.CREATED,
-        success: true,
-        message: 'Project is created succesfully',
-        data: result,
-    });
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: "Project created successfully",
+    data: result,
+  });
 });
 
-
-// All project data
+// ✅ Get All Projects
 const getAllProject = catchAsync(async (req, res) => {
+  const result = await projectService.getAllProjectFromDB();
 
-    const result = await projectService.getAllProjectFromDB();
-
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: 'Project fetched successfully',
-        data: result,
-    });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Projects fetched successfully",
+    data: result,
+  });
 });
 
-
-// Get Single Project
+// ✅ Get Single Project
 const getSingleProject = catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const result = await projectService.getSingleProjectFromDB(id);
+  const { id } = req.params;
 
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: 'Single Project is retrieved succesfully',
-        data: result,
-    });
+  const result = await projectService.getSingleProjectFromDB(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Project retrieved successfully",
+    data: result,
+  });
 });
 
-// Update Project
+// ✅ Update Project
 const updateProject = catchAsync(async (req, res) => {
+  const { id } = req.params;
 
-    const { id } = req.params;
+  const result = await projectService.updateProjectIntoDB(id, req.body);
 
-    const result = await projectService.updateProjectIntoDB(id, req.body);
-
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: 'Project is updated succesfully',
-        data: result,
-    });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Project updated successfully",
+    data: result,
+  });
 });
 
-
-// Delete Project Data
+// ✅ Delete Project
 const deleteProject = catchAsync(async (req, res) => {
+  const { id } = req.params;
 
-    const id = req.params.id;
+  await projectService.deleteProjectFromDB(id);
 
-    await projectService.deleteProjectFromDB(id);
-
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: 'Project deleted succesfully',
-        data: undefined
-    });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Project deleted successfully",
+    data: null,
+  });
 });
 
-
-
+// ✅ Export Controllers
 export const ProjectControllers = {
-    createProject,
-    getAllProject,
-    updateProject,
-    deleteProject,
-    getSingleProject
-
+  createProject,
+  getAllProject,
+  getSingleProject,
+  updateProject,
+  deleteProject,
 };
