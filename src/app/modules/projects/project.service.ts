@@ -1,116 +1,55 @@
-
-
-
-
-// Create Project
-// const createProjectIntoDB = async (payload: TProject, file: any) => {
-
 import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
 import { TProject } from "./project.interface";
 import { Project } from "./project.model";
 
-//     if (file) {
-//         const imageName = `${payload?.title}`;
-//         const path = file?.path;
-
-//         //send image to cloudinary
-//         const { secure_url } = await sendImageToCloudinary(imageName, path);
-//         payload.image = secure_url as string;
-//     }
-
-//     const newproject = await Project.create([payload]);
-
-//     // const newStudent = await Student.create([payload], { session });
-
-//     const result = await Project.create(newproject);
-
-//     return result;
-// };
-
+// Create Project
 const createProjectIntoDB = async (payload: TProject) => {
-
-    const newPayload = { ...payload };
-
-    const result = await Project.create(newPayload);
-
-    return result;
+  const newPayload = { ...payload };
+  const result = await Project.create(newPayload);
+  return result;
 };
 
-
-// Get all Project
+// Get All Projects
 const getAllProjectFromDB = async () => {
-
-    const blog = Project.find()
-
-    return blog;
+  const projects = await Project.find();
+  return projects;
 };
 
-
-// Get Single Project
+// Get Single Project by ID
 const getSingleProjectFromDB = async (id: string) => {
-
-    const project = await Project.findById({ _id: id })
-
-    if (!project) {
-        throw new AppError(httpStatus.NOT_FOUND, 'This project is not found !');
-    }
-
-    const result = await Project.findById(id)
-
-    return result;
+  const project = await Project.findById(id);
+  if (!project) {
+    throw new AppError(httpStatus.NOT_FOUND, "This project is not found!");
+  }
+  return project;
 };
-
 
 // Update Project
 const updateProjectIntoDB = async (id: string, payload: Partial<TProject>) => {
-
-
-    // if (file) {
-    //     const imageName = `${file.filename}`;
-    //     const path = file?.path;
-
-    //     //send image to cloudinary
-    //     const { secure_url } = await sendImageToCloudinary(imageName, path);
-    //     payload.image = secure_url as string;
-    // }
-    // console.log(payload);
-
-    const project = await Project.findById({ _id: id })
-
-    if (!project) {
-        throw new AppError(httpStatus.NOT_FOUND, 'This project is not found !');
-    }
-
-
-    const result = await Project.findOneAndUpdate({ _id: id }, payload,
-        {
-            new: true,
-        },
-    )
-
-    return result;
+  const updatedProject = await Project.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
+  if (!updatedProject) {
+    throw new AppError(httpStatus.NOT_FOUND, "This project is not found!");
+  }
+  return updatedProject;
 };
-
 
 // Delete Project
 const deleteProjectFromDB = async (id: string) => {
-
-    const project = await Project.findById(id);
-
-    // Check Project Exist
-    if (!project) {
-        throw new Error('This project not found !')
-    }
-
-    const result = Project.findByIdAndDelete(id)
-    return result;
+  const deletedProject = await Project.findByIdAndDelete(id);
+  if (!deletedProject) {
+    throw new AppError(httpStatus.NOT_FOUND, "This project is not found!");
+  }
+  return deletedProject;
 };
 
-
+// Exporting all services
 export const projectService = {
-    createProjectIntoDB,
-    getAllProjectFromDB,
-    updateProjectIntoDB,
-    deleteProjectFromDB,
-    getSingleProjectFromDB
+  createProjectIntoDB,
+  getAllProjectFromDB,
+  getSingleProjectFromDB,
+  updateProjectIntoDB,
+  deleteProjectFromDB,
 };
