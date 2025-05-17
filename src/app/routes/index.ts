@@ -1,3 +1,4 @@
+import { SkillsRoutes } from './../modules/skills/skill.route';
 import { Router } from "express";
 import { AuthRoutes } from "../modules/auth/auth.router";
 import { AdminRoutes } from "../modules/admin/admin.route";
@@ -23,6 +24,10 @@ const moduleRoutes = [
     {
         path: '/projects',
         route: ProjectRoutes,
+    },
+    {
+        path: '/skills',
+        route: SkillsRoutes,
     },
 
 ];
