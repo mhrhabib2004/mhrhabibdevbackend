@@ -1,13 +1,20 @@
 import express, { Request, Response } from "express";
 import router from "./app/routes";
-
+import cors from "cors";
 
 const app = express();
 
-// Middleware
-app.use(express.json()); // To parse JSON bodies
+// ✅ CORS middleware must come BEFORE any routes
+app.use(cors({
+  origin: 'http://localhost:3000', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
 
-// application routes
+// Middleware to parse JSON
+app.use(express.json());
+
+// Application routes
 app.use('/api', router);
 
 // Root route

@@ -4,6 +4,7 @@ import { AuthRoutes } from "../modules/auth/auth.router";
 import { AdminRoutes } from "../modules/admin/admin.route";
 import { ProjectRoutes } from "../modules/projects/project.route";
 import { BlogsRoutes } from "../modules/blog/blog.route";
+import { ContactRoutes } from '../modules/contact/contact.route';
 
 
 const router = Router();
@@ -28,6 +29,10 @@ const moduleRoutes = [
     {
         path: '/skills',
         route: SkillsRoutes,
+    },
+    {
+        path: '/contact',
+        route: ContactRoutes,
     },
 
 ];
