@@ -6,7 +6,7 @@ const app = express();
 
 // ✅ CORS middleware must come BEFORE any routes
 app.use(cors({
-  origin: 'http://localhost:3000', 
+  origin: ['http://localhost:3000', 'https://mhrhabibdev.vercel.app',"https://mhrhabibdevadmin.vercel.app"], 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
